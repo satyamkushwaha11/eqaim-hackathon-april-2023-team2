@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:team2/editImage.dart';
 
 class ImagePickerPage extends StatefulWidget {
   const ImagePickerPage({Key? key}) : super(key: key);
@@ -15,11 +16,14 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
 
   Future<void> _getImageFromPhone() async {
     final pickedFile =
-        await ImagePicker().getImage(source: ImageSource.gallery);
+        await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
-      setState(() {
-        _imageFile = File(pickedFile.path);
-      });
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => MyApp2(selectedImages: pickedFile.path)));
+      // setState(() {
+      //   _imageFile = File(pickedFile.path);
+      // });
+
     }
   }
 

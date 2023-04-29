@@ -22,6 +22,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Future getImageFromCamera() async {
     final pickedFile = await picker.pickImage(source: ImageSource.camera);
     if (pickedFile != null) {
+      setState(() {
+        _images.add(pickedFile.path);  
+      });
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => MyApp2(selectedImages: pickedFile.path)));
     }
@@ -31,6 +34,9 @@ class _HomeScreenState extends State<HomeScreen> {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
+      setState(() {
+        _images.add(pickedFile.path);
+      });
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => MyApp2(selectedImages: pickedFile.path)));
 
@@ -55,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
             mainAxisSpacing: 8.0,
             children: List.generate(_images.length, (index) {
               return Center(
-                child: Image.file(_images[index]),
+                child: Image.file(File(_images[index])),
               );
             })),
       ),

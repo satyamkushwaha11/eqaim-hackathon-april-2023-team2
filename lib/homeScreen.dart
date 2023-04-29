@@ -1,11 +1,34 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 
-class HomeScreen extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:team2/imageUploadScreen.dart';
+
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
-  void _onItemTapped(int index) {
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final List _images = [];
+  final picker = ImagePicker();
+
+  Future getImageFromCamera() async {
+    final pickedFile = await picker.getImage(source: ImageSource.camera);
+    if (pickedFile != null) {
+      setState(() {
+        _images.add(File(pickedFile.path));
+      });
+    }
+  }
+
+  void _onItemTapped(int index) async {
     if (index == 0) {
-      print('Take a picture');
+      await getImageFromCamera();
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => Upload(selectedImages: _images)));
     } else if (index == 1) {
       print('choose from gallery');
     }
@@ -14,28 +37,21 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Team 2 '),),
-      body: ListView.separated(
-          itemBuilder: ((context, index) {
-            return Row(
-              children: [
-                Expanded(
-                    child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Image.network(
-                      'https://images.pexels.com/photos/1213294/pexels-photo-1213294.jpeg?auto=compress&cs=tinysrgb&w=600'),
-                )),
-                Expanded(
-                    child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Image.network(
-                      'https://images.pexels.com/photos/1402787/pexels-photo-1402787.jpeg?auto=compress&cs=tinysrgb&w=600'),
-                ))
-              ],
-            );
-          }),
-          separatorBuilder: (context, int index) => const Divider(),
-          itemCount: 20),
+      appBar: AppBar(
+        title: Text('Team 2 '),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: GridView.count(
+            crossAxisCount: 2,
+            crossAxisSpacing: 4.0,
+            mainAxisSpacing: 8.0,
+            children: List.generate(_images.length, (index) {
+              return Center(
+                child: Image.file(_images[index]),
+              );
+            })),
+      ),
       bottomSheet: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(

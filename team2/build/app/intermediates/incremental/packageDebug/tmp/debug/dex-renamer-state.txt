@@ -1,0 +1,4 @@
+#Sat Apr 29 11:31:05 IST 2023
+base.0=C\:\\Eqaim\\learning\\Flutter\\eqaim-hackathon-april-2023-team2\\team2\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+path.0=classes.dex
+renamed.0=classes.dex

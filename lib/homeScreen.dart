@@ -2,13 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:team2/editImage.dart';
 import 'package:team2/imageUploadScreen.dart';
 import 'chooseFromGallery.dart';
 
 
 class HomeScreen extends StatefulWidget {
-
-
 
   const HomeScreen({super.key});
 
@@ -23,18 +22,23 @@ class _HomeScreenState extends State<HomeScreen> {
   Future getImageFromCamera() async {
     final pickedFile = await picker.pickImage(source: ImageSource.camera);
     if (pickedFile != null) {
-      setState(() {
-        _images.add(File(pickedFile.path));
-      });
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => MyApp2(selectedImages: pickedFile.path)));
     }
   }
 
-  void captureImage() async {
-      await getImageFromCamera();
+  Future<void> _getImageFromPhone() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
       Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => Upload(selectedImages: _images)));
-    
+          builder: (context) => MyApp2(selectedImages: pickedFile.path)));
+
+    }
   }
+
+ 
+  
 
   @override
   Widget build(BuildContext context) {
@@ -70,12 +74,13 @@ class _HomeScreenState extends State<HomeScreen> {
         unselectedItemColor: Colors.blue,
         onTap: (int index) {
           if (index == 0) {
-            captureImage();  
+            getImageFromCamera();  
           } else if (index == 1) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ImagePickerPage()),
-            );
+            _getImageFromPhone();
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(builder: (context) => ImagePickerPage()),
+            // );
           }
         },
       ),

@@ -4,7 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:team2/imageUploadScreen.dart';
 
+
 class HomeScreen extends StatefulWidget {
+
+import 'chooseFromGallery.dart';
+
+
   const HomeScreen({super.key});
 
   @override
@@ -40,6 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Text('Team 2 '),
       ),
+
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: GridView.count(
@@ -52,6 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             })),
       ),
+
       bottomSheet: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -64,7 +71,16 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
         unselectedItemColor: Colors.blue,
-        onTap: _onItemTapped,
+        onTap: (int index) {
+          if (index == 0) {
+            // Handle "Take a picture" item tap
+          } else if (index == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ImagePickerPage()),
+            );
+          }
+        },
       ),
     );
   }

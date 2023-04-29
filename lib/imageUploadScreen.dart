@@ -12,7 +12,7 @@ class Upload extends StatelessWidget {
       child: Scaffold( 
         body: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Image.file(selectedImages[0]),
+          child: Image.file(selectedImages[selectedImages.length-1]),
         ),
         floatingActionButton: FloatingActionButton.large(
           onPressed: () {},

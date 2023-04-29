@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:team2/imageUploadScreen.dart';
+import 'chooseFromGallery.dart';
 
 
 class HomeScreen extends StatefulWidget {
 
-import 'chooseFromGallery.dart';
 
 
   const HomeScreen({super.key});
@@ -21,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final picker = ImagePicker();
 
   Future getImageFromCamera() async {
-    final pickedFile = await picker.getImage(source: ImageSource.camera);
+    final pickedFile = await picker.pickImage(source: ImageSource.camera);
     if (pickedFile != null) {
       setState(() {
         _images.add(File(pickedFile.path));
@@ -29,14 +29,11 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  void _onItemTapped(int index) async {
-    if (index == 0) {
+  void captureImage() async {
       await getImageFromCamera();
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => Upload(selectedImages: _images)));
-    } else if (index == 1) {
-      print('choose from gallery');
-    }
+    
   }
 
   @override
@@ -73,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
         unselectedItemColor: Colors.blue,
         onTap: (int index) {
           if (index == 0) {
-            // Handle "Take a picture" item tap
+            captureImage();  
           } else if (index == 1) {
             Navigator.push(
               context,
